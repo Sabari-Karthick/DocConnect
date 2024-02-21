@@ -1,6 +1,7 @@
 package com.Batman.restcontroller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/appointment")
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyAuthority('ADMIN','USER','DOCTOR')")
 public class AppointmentController {
 
 	private final IAppointmentService appointmentService;
@@ -32,9 +34,4 @@ public class AppointmentController {
 
 		return ResponseEntity.ok(appointmentService.updateAppointmentStatus(appointmentID, status));
 	}
-	
-	
-
-	
-
 }
