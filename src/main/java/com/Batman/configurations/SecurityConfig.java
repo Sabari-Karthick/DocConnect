@@ -2,7 +2,7 @@ package com.Batman.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,9 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-	    prePostEnabled = true, securedEnabled = false, jsr250Enabled = true
-	)
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -31,27 +29,23 @@ public class SecurityConfig {
 
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
-		http
-		     .csrf().disable().authorizeRequests()
-             .and()
-             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-             .and()
-		     .authorizeRequests()
-		     .antMatchers("/oauth2/**", "/**/*swagger*/**").permitAll()
-		     .antMatchers("/api/user/login","/api/user/register").permitAll()
-		     .antMatchers("/api/doctor/all/**").permitAll()
-		     .anyRequest().authenticated()
-		     .and()
-		     .oauth2Login()
-		     .authorizationEndpoint().baseUri("/oauth2/authorize")
-		     .and()
-             .userInfoEndpoint().userService(oauth2Service)
-             .and()
-             .successHandler(handler)
-             .and()
-             .apply(configurer);
+	 SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(requests -> requests
+                        .antMatchers("/oauth2/**", "/**/*swagger*/**").permitAll()
+                        .antMatchers("/api/user/login", "/api/user/register").permitAll()
+                        .antMatchers("/api/doctor/all/**").permitAll()
+                        .anyRequest().authenticated())
+                .oauth2Login(login -> login
+                        .authorizationEndpoint().baseUri("/oauth2/authorize")
+                        .and()
+                        .userInfoEndpoint().userService(oauth2Service)
+                        .and()
+                        .successHandler(handler))
+                .apply(configurer);
              
 		     
 		  
