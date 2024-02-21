@@ -20,29 +20,29 @@ import lombok.RequiredArgsConstructor;
 public class AppConfig {
 
 	@Bean
-	public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
+	AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
 			PasswordEncoder passwordEncoder) {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setUserDetailsService(userDetailsService);
-		authenticationProvider.setPasswordEncoder(passwordEncoder );
+		authenticationProvider.setPasswordEncoder(passwordEncoder);
 
 		return new ProviderManager(authenticationProvider);
 	}
 
 	@Bean
-	public ModelMapper modelMapper() {
+	ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		return mapper;
 	}
 
 	@Bean
-	public PasswordEncoder bCryptPasswordEncoder() {
+	PasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
-	public ObjectMapper getMapper() {
+	ObjectMapper getMapper() {
 		return new ObjectMapper();
 	}
 
