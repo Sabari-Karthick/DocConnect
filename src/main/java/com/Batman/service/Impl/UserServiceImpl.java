@@ -2,12 +2,12 @@ package com.Batman.service.Impl;
 
 import java.util.Collections;
 
-import javax.transaction.Transactional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import com.Batman.dto.RegistrationRequest;
@@ -41,22 +41,25 @@ public class UserServiceImpl implements IUserService {
 	private final UserRepository userRepository;
 
 	private final DoctorRepository doctorRepository;
-	
+
 	private final PasswordEncoder encoder;
 
 	private final AuthenticationManager authenticationManager;
-	
-  private final JwtProvider provider;
+
+	private final JwtProvider provider;
+
 	@Override
 	public AuthenticationResponse login(AuthenticationRequest request) {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		UserEntity userEntity = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new DetailsNotFoundException("EMAIL_NOT_FOUND"));
+		authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+		UserEntity userEntity = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new DetailsNotFoundException("EMAIL_NOT_FOUND"));
 		String token = provider.createToken(userEntity.getEmail(), userEntity.getRoles().iterator().next().name());
 		AuthenticationResponse response = new AuthenticationResponse();
 
 		response.setResponse(mapper.convertToResponse(userEntity, UserResponse.class));
 		response.setToken(token);
-		return  response;
+		return response;
 	}
 
 	@Override
@@ -109,8 +112,8 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserEntity fetchUserByEmail(String usermail) {
-		 return userRepository.findByEmail(usermail).orElseThrow(()->new UserNotFoundException("No User Available with this mail"));
+		return userRepository.findByEmail(usermail)
+				.orElseThrow(() -> new UserNotFoundException("No User Available with this mail"));
 	}
 
-	
 }
