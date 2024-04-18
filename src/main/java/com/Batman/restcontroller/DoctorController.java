@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/doctor")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnhyAuthority('DOCTOR','ADMIN')")
+@PreAuthorize("hasAnyAuthority('DOCTOR','ADMIN')")
 public class DoctorController {
 
 	private final IDoctorService doctorService;
