@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ADMIN','USER')")
+@PreAuthorize("hasAnyAuthority('ADMIN','USER')")
 public class UserController {
 	
 	private final IUserService userService;
