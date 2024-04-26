@@ -1,6 +1,6 @@
 package com.Batman.restcontroller;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyAuthority('ADMIN','USER')")
 public class UserController {
 	
 	private final IUserService userService;
@@ -55,17 +54,20 @@ public class UserController {
     	
     }
     
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/details/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Integer id){
     	return ResponseEntity.ok(userService.getUserDetails(id));
     }
     
     
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @PostMapping("/upgrade/doctor")
     public ResponseEntity<?> upgradeUserToDoctor(@Valid @RequestBody UpgradeRequest request,BindingResult bindingResult){
     	return ResponseEntity.ok(userService.upgradeUserToDoctor(request, bindingResult));
     }
     
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     @GetMapping("/appointment/{userID}/appointments/{status}")
 	public ResponseEntity<?> getAllUserAppointmentsByStatus(@PathVariable("userID") Integer userID,
 			@PathVariable AppointmentStatus status) {
