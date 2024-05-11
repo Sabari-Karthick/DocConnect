@@ -1,6 +1,6 @@
 package com.Batman.dto.user;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import com.Batman.enums.MedicalSpecialty;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
