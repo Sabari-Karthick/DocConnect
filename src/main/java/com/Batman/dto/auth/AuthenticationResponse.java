@@ -4,7 +4,7 @@ import com.Batman.dto.user.UserResponse;
 
 import lombok.Data;
 
-//authentication response
+//Authentication response 
 @Data
 public class AuthenticationResponse {
 
