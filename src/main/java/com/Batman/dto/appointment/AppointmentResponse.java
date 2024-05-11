@@ -11,7 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 
 import lombok.Data;
 
-
+//appointment response
 @Data
 public class AppointmentResponse {
 	private Integer id;
