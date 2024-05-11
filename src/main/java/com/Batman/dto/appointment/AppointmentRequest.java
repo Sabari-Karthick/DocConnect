@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import lombok.Data;
-
+//Appointment Request
 @Data
 public class AppointmentRequest {
 	
