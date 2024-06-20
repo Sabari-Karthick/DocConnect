@@ -27,7 +27,10 @@ import com.Batman.exceptions.JwtAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class JwtFilter extends OncePerRequestFilter{
@@ -39,10 +42,11 @@ public class JwtFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+		log.info("Entered Authentication Filter.......");
 		String token = provider.resolveToken((HttpServletRequest) request);
 		try {
 		if(token!= null && provider.validateToken(token) ) {
+			log.info("Entering Authentication......");
 			Authentication authentication = provider.getAuthentication(token);
 
             if (authentication != null) {
