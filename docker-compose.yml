@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:latest
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: docconnect
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "33067:3306"
+    networks:
+      - springboot-mysql-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      retries: 10
+      interval: 3s
+      timeout: 30s
+
+
+  spring-boot-app:
+    image: docker-docconnect:latest
+    container_name: spring-boot-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/docconnect
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    networks:
+      - springboot-mysql-network
+networks:
+  springboot-mysql-network:
+    name: springboot-mysql-network
+
